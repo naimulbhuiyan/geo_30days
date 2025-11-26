@@ -1,0 +1,82 @@
+# =============================
+# Bangladesh map data
+# =============================
+library(sf)          # spatial operations
+library(bangladesh)  # Bangladesh boundary data
+
+bd_country <- get_map("country")   # Bangladesh country boundary (sf object)
+
+
+# =============================
+# Projection (Robinson)
+# =============================
+target_crs_robinson <- "ESRI:54030"   # Robinson CRS
+
+bd_country_robinson <- st_transform(
+  bd_country,
+  crs = target_crs_robinson
+)   # project Bangladesh to Robinson
+
+
+# =============================
+# Load & prepare station data
+# =============================
+library(dplyr)   # data cleaning
+library(readr)   # CSV reading
+
+stations <- read_csv(
+  "C:/Users/user/Downloads/Weather-Stations-Map-main/Weather-Stations-Map-main/isd-history.csv",
+  show_col_types = FALSE
+)   # read CSV
+
+stations_clean <- stations %>%
+  filter(!is.na(LAT), !is.na(LON)) %>%          # remove missing coords
+  filter(LAT >= -90, LAT <= 90,                 # valid latitude
+         LON >= -180, LON <= 180)              # valid longitude
+
+stations_sf <- st_as_sf(
+  stations_clean,
+  coords = c("LON", "LAT"),
+  crs = 4326,
+  remove = FALSE
+)   # convert to sf (WGS84)
+
+stations_sf_robinson <- st_transform(
+  stations_sf,
+  crs = target_crs_robinson
+)   # reproject stations to Robinson
+
+
+# keep only stations inside Bangladesh boundary
+stations_bd_robinson <- st_join(
+  stations_sf_robinson,
+  bd_country_robinson,
+  join = st_within,
+  left = FALSE
+)
+
+
+# =============================
+# Plot Bangladesh map
+# =============================
+library(ggplot2)   # plotting
+
+ggplot() +
+  geom_sf(
+    data = bd_country_robinson,
+    fill  = "grey90",
+    color = "grey40",
+    linewidth = 0.5
+  ) +
+  geom_sf(
+    data = stations_bd_robinson,
+    size  = 0.7,
+    color = "red",
+    alpha = 0.8
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text  = element_blank(),
+    axis.title = element_blank(),
+    panel.grid = element_blank()
+  )

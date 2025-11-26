@@ -1,0 +1,4 @@
+"0","target_crs_robinson <- ""ESRI:54030""   # Robinson projection CRS"
+"0",""
+"0","world_countries_robinson <- st_transform(world_countries, crs = target_crs_robinson)  # project countries"
+"0","world_oceans_robinson    <- st_transform(world_oceans,    crs = target_crs_robinson)  # project oceans"

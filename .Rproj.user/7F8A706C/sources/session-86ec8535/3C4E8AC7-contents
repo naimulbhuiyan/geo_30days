@@ -2,4 +2,69 @@
 title: "R geo: day1"
 output: html_notebook
 ---
+# World map data
+```{r echo=TRUE}
+library(sf)               # for spatial operations
+library(rnaturalearth)    # for world map data
+
+world_countries <- ne_countries(scale = "medium", returnclass = "sf")   # country polygons
+world_oceans <- ne_download(
+  scale = "medium",
+  type = "ocean",
+  category = "physical",
+  returnclass = "sf"
+)   # ocean polygons
+```
+
+# Projection (Robinson)
+```{r echo=TRUE}
+target_crs_robinson <- "ESRI:54030"   # Robinson projection CRS
+
+world_countries_robinson <- st_transform(world_countries, crs = target_crs_robinson)  # project countries
+world_oceans_robinson    <- st_transform(world_oceans,    crs = target_crs_robinson)  # project oceans
+```
+
+# Load & prepare station data
+```{r echo=TRUE}
+library(dplyr)            # data cleaning
+library(readr)            # CSV reading
+
+stations <- read_csv(
+  "C:/Users/user/Downloads/Weather-Stations-Map-main/Weather-Stations-Map-main/isd-history.csv",
+  show_col_types = FALSE
+)   # read station file
+
+stations_clean <- stations %>%
+  filter(!is.na(LAT), !is.na(LON)) %>%                 # remove missing coords
+  filter(LAT >= -90, LAT <= 90,                        # valid latitude
+         LON >= -180, LON <= 180)                      # valid longitude
+
+stations_sf <- st_as_sf(
+  stations_clean,
+  coords = c("LON", "LAT"),
+  crs = 4326,
+  remove = FALSE                                       # keep columns
+)   # convert to sf
+
+stations_sf_robinson <- st_transform(stations_sf, crs = target_crs_robinson)   # reproject stations
+```
+
+# Plot map
+```{r}
+library(ggplot2)          # plotting
+
+ggplot() +
+  geom_sf(data = world_oceans_robinson, fill = "lightblue", color = NA) +
+  geom_sf(data = world_countries_robinson, fill = "grey90", color = "grey60", linewidth = 0.1) +
+  geom_sf(data = stations_sf_robinson, size = 0.3, color = "red", alpha = 0.6) +
+  theme_minimal() +
+  theme(
+    axis.text = element_blank(),
+    axis.title = element_blank(),
+    panel.grid = element_blank()
+    # text = element_text(family = "Roboto")   # optional font
+  )
+```
+
+
 

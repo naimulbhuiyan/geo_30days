@@ -3,9 +3,9 @@
     "path": "C:/linkedin/R_geo/d1.Rmd",
     "project_path": "d1.Rmd",
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "3676269038",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1764146800307.0,
     "source_on_save": false,
     "relative_order": 1,
@@ -14,15 +14,16 @@
         "chunk_output_type": "inline",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "5,0",
-        "scrollLine": "0"
+        "cursorPosition": "68,0",
+        "scrollLine": "0",
+        "docOutlineVisible": "1"
     },
-    "folds": "",
-    "lastKnownWriteTime": 1764146819,
+    "folds": "0|3|3|0|\n4|16|17|0|\n18|23|25|0|\n26|29|50|0|\n51|10|67|0|\n",
+    "lastKnownWriteTime": 1764150807,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1764146831637,
+    "last_content_update": 1764150807741,
     "read_only": false,
     "read_only_alternatives": []
 }
