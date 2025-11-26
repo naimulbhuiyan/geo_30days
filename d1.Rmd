@@ -1,6 +1,8 @@
 ---
-title: "R geo: day1"
-output: html_notebook
+title: 'R geo: day1'
+output:
+  html_document:
+    df_print: paged
 ---
 # World map data
 ```{r echo=TRUE}
@@ -67,4 +69,10 @@ ggplot() +
 ```
 
 
-
+# Reference
+- https://www.linkedin.com/in/dina-yazdani-6b6213342/recent-activity/all/
+- https://www.linkedin.com/in/mbforr/recent-activity/all/
+- https://www.linkedin.com/in/jakub-nowosad-r/recent-activity/all/
+- https://www.linkedin.com/in/yutannihilation/recent-activity/all/
+- https://www.linkedin.com/in/egorkotov/recent-activity/all/
+- https://www.linkedin.com/in/gboeing/recent-activity/all/
